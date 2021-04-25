@@ -1,0 +1,157 @@
+a{
+    cursor: pointer !important;
+}
+.carousel-item{
+    height: 90vh;
+}
+.card{
+    margin: 10px 10px;
+}
+#footer{
+    width: 100%;
+    height: 200px;
+    background: #000;
+}
+.nav-icon{
+    width: 30px !important;
+    height: 30px !important;
+    padding: 5px 5px;
+    border-radius: 50%;
+    border: 1px solid gray;
+    margin-right: 20px;
+}
+.login-wrapper{
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    z-index: 999;
+    background-color: #fff;
+}
+.show{
+    display: block;
+}
+.hide{
+    display: none;
+}
+.login-box{
+    width: 400px;
+    height: 400px;
+    padding: 15px;
+    border: 1px solid gray;
+    margin: 220px auto 0;
+}
+.link-def{
+    color: black;
+}
+.aktif{
+    color: #0056b3;
+}
+.tinggi-100{
+    height: 100vh;
+}
+.dash-logo{
+    padding: 0 5rem 0;
+}
+.dash-wrapper{
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+.dash-flex-wrap{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    background: red;
+}
+.dash-section-wrap{
+    width: 100%;
+    min-height: 854px;
+    height: auto; 
+    display: flex;
+}
+.sidebar{
+    width: 15%;
+    min-height: 100%;
+    height: auto;
+    flex-direction: column;
+    background-color: #354052;
+}
+.main-section{
+    width: 85%;
+    height: auto;
+}
+.sidebar-nav-item{
+    width: 100%;
+    padding: 10px 30px;
+    text-align: left;
+    color: #bdc1c6;
+    cursor: pointer;
+}
+.sidebar-nav-item:hover{
+    color: rgba(255, 255, 255, 0.9);
+}
+.child-section{
+    width: 100%;
+    height: 100%;
+}
+.dash-user-menu{
+    left: -100px !important;
+}
+.dash-searchbar{
+    width: 600px !important;
+}
+.product-wrapper{
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+    display: flex;
+    margin-top: 55px;
+}
+.product-wrapper-child{
+    width: 50%;
+    min-height: 100%;
+    height: auto;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.product-detail{
+    padding: 10rem;
+}
+.review-wrapper{
+    background-color: #fff;
+}
+.nav-badge{
+    position: absolute;
+    top: -7px;
+    left: -7px;
+}
+.cart-wrapper{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    background-color: hsla(0,0%,93%,.8);
+    z-index: 1000;
+}
+.cart-item-wrapper{
+    width: 30%;
+    height: 100%;
+    background-color: #fff;
+    float: right;
+}
+.cart-item-list{
+    width: 100;
+    height: auto;
+    min-height: 50%;
+}
+.cart-img-list{
+    object-fit: cover;
+}
+.outline-none{
+    border: none !important;
+}
+.slider-wrapper{
+    margin-top: 55px !important;    
+}
