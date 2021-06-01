@@ -1,0 +1,14 @@
+*fitur yang perlu dibuat
+-perbaiki fitur loading halaman(skip)
+-input barang(v)
+-custom banner dihalaman index
+-fitur checkout
+-kondisi jika item dicart sudah ada maka ketika atc maka akan menambah item yg sudah ada
+-halaman profile untuk user
+    -history transaksi
+
+-checkout logic
+klik checkout -> continue shipping -> form alamat -> ok -> tunggu balasan dari admin 
+
+-ganti kolom review_id menjadi post_id pada table review
+-pada saat submit item , form input tidak clear tolong difix

@@ -18,7 +18,7 @@ a{
     padding: 5px 5px;
     border-radius: 50%;
     border: 1px solid gray;
-    margin-right: 20px;
+    margin-right: 10px;
 }
 .login-wrapper{
     position: fixed;
@@ -35,7 +35,8 @@ a{
 }
 .login-box{
     width: 400px;
-    height: 400px;
+    height: auto;
+    min-height: 400px;
     padding: 15px;
     border: 1px solid gray;
     margin: 220px auto 0;
@@ -144,7 +145,10 @@ a{
 .cart-item-list{
     width: 100;
     height: auto;
-    min-height: 50%;
+    max-height: 600px;
+    min-height: 600px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 .cart-img-list{
     -o-object-fit: cover;
@@ -155,4 +159,28 @@ a{
 }
 .slider-wrapper{
     margin-top: 55px !important;    
+}
+.checkout-section {
+    width: 95%;
+    margin: auto;
+}
+.title-payment{
+    width: 50%;
+    height: auto;
+}
+.checkout-item-list{
+    width: 50%;
+    min-height: 400px;
+    height: auto;
+}
+.icon-checkout{
+    margin: 0 10px 0;
+}
+.item-image{
+    -o-object-fit: cover;
+       object-fit: cover;
+}
+.form-shipping{
+    width: 50%;
+    margin: 50px auto 0;
 }

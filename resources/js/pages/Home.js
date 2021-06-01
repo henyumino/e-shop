@@ -1,16 +1,16 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import { Navbar, ProductItem } from '../components'
-import {CartContext} from '../context/CartContext'
-
+import { ItemContext } from '../context/ItemContext'
 
 const Home = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     })
-    let history = useHistory()
-    const {products} = useContext(CartContext)
+
+    const {itemDash} = useContext(ItemContext)
+
+
     return (
         <>
             <Navbar />
@@ -48,8 +48,8 @@ const Home = () => {
             <div className="container">
                 <div className="row">
                     {
-                        products.map((product, idx) => (
-                            <ProductItem key={idx} name={product.name} price={product.price} img={product.img} />
+                        itemDash.map((product, idx) => (
+                            <ProductItem key={idx} name={product.name} slug={product.slug} price={product.price} desc={product.description} img={product.item_image} />
                         ))
                     }
                    

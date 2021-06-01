@@ -1,59 +1,192 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { Redirect, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faShoppingCart, faMinus, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Navbar } from '../components'
 import { CartContext } from '../context/CartContext'
+import { AuthContext } from '../context/AuthContext'
+import { ItemContext } from '../context/ItemContext'
+import axios from 'axios'
+
+axios.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token')
+    config.headers.Authorization = `Bearer ${token}`
+    return config
+})
 
 const Product = () => {
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    })
     
     let { slug } = useParams()
 
-    // dibagian ini biarkan api product di cocokkan dengan slug
+    const link = 'http://localhost:8000'
 
-    const [tproduct] = useState([{
-        name: 'asd1',
-        price : 700,
-        img : 'https://image.freepik.com/free-vector/white-product-podium-with-green-tropical-palm-leaves-golden-round-arch-green-wall_87521-3023.jpg',
-    }])
+    // dibagian ini biarkan api product di cocokkan dengan slug
     
     const {addToCart} = useContext(CartContext)
+    // const {showSingle,itemSingle} = useContext(ItemContext)
+    const [item, setItem] = useState([])
+    const [cart, setCart] = useState([{
+        name : '',
+        desc : '',
+        price : '',
+        img : ''
+    }])
+
+    const [isLoading, setisLoading] = useState(true)
+
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        document.title = 'E Shop - '+slug
+        return () => {
+            document.title = 'E Shop'
+        }
+    }, [])
+
+    useEffect(() => {
+        setCart([{...cart, name: item.name, desc: item.description , price: item.price, img: item.item_image}])
+    }, [item])
+
+    useEffect(() => {
+        getProduct()
+    }, [slug])
+
+    const getProduct = () => {
+        axios.get(`${link}/api/item/${slug}`)
+            .then(res => {
+                setItem(res.data)
+                setisLoading(false)
+            })
+            .catch(err => console.log(err))
+    }
+
+
+    //form review
+
+    const {user} = useContext(AuthContext)
+    const [rForm, setrForm] = useState(false)
+
+    useEffect(() => {
+        if(user != ""){
+            setrForm(true)
+        }
+        else{
+            setrForm(false)
+        }
+    }, [user])
+
+    const [rData, setrData] = useState([])
+    const [rErr, setrErr] = useState([])
+
+    const handleChange = ({target}) => {
+        setrData(target.value)
+    }
+
+    const onSubmit = (e) => {
+        e.preventDefault()
+        
+        const data = { item_id : item.id, body : rData, user_id : user.id}
+
+        axios.get(`${link}/sanctum/csrf-cookie`)
+            .then(res => {
+                axios.post(`${link}/api/review`, data)
+                    .then(res => {
+                        if(res.data){
+                            getProduct()
+                            setrData('')
+                        }
+                        else{
+                            setrErr(res.data.errors)
+                            console.log(res.data.errors);
+                            // fitur validasi tolong dibuat
+                        }
+                    }).catch(err => console.log(err))
+            })
+    }
+
+    if(isLoading)
+    {
+        return <div>loading ...</div>
+    }
+
+    if(item == "")
+    {
+        return <Redirect to='/notfound' />
+    }
 
     return (
-        <>
+        <> 
             <Navbar />
+            {/* modal */}
+            <div className="modal fade" id="addToCartModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLongTitle">Notification</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        item added successfully
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            {/* end of modal */}
             <div className="product-wrapper">
-                <div className="product-wrapper-child" style={{backgroundImage: `url(https://image.freepik.com/free-vector/watercolor-nature-background-with-leaves_52683-59449.jpg)`}}></div>
+        
+                <div className="product-wrapper-child" style={{backgroundImage: `url(/storage/item_image/${item.item_image})`}}></div> 
+                
                 <div className="product-wrapper-child">
                     <div className="w-100 product-detail">
-                        <h1>{}</h1>
-                        <h5>asdasd asdasdas sadsadasdsa   asdasdasdas</h5>
+                        <h1>{item.name}</h1>
                         <hr />
                         <div className="d-flex justify-content-between">
-                            <h6>Rp. 123231123</h6>  
+                            <h6>Rp. {item.price}</h6>  
                         </div>
-                        <button type="button" className="btn btn-primary w-100 my-4" onClick={() => addToCart(tproduct)}>Add to Cart</button>
+                        <button type="button" className="btn btn-primary w-100 my-4" data-toggle="modal" data-target="#addToCartModal" onClick={() => addToCart(cart)}>Add to Cart</button>
                         <p>
-                            is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+                            {item.description}
                         </p>
                     </div>
                 </div>
             </div>
             <div className="container review-wrapper">
                 <h1 className="text-center my-5">Customer Review</h1>
+                {
+                    rForm ?  
+                    <div className="form-group d-flex flex-column">
+                        <label>Review</label>
+                        <textarea className="form-control" name="review" id="reviewInput" rows="2" onChange={handleChange} value={rData} />
+                        <div className="d-flex flex-column align-items-end w-100 mt-2">
+                            <button className="btn btn-primary" onClick={onSubmit}>submit</button>
+                        </div>
+                    </div>
+                    : 
+                    
+                    ""
+                }
                 <hr />
                 {/* review card */}
-                <div className="card mb-3 border-light" style={{maxWidth: '100%'}}>
-                    <div className="card-body">
-                        <h5 className="card-title">Light card title</h5>
-                        <small className="mb-2 d-block">20 mar 2020</small>
-                        <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a className="float-right">report</a>
-                    </div>
-                </div>
+                {
+                    item.reviews.map((rev, index) => {
+                        return (
+                            <div key={index} className="card mb-3 border-light" style={{maxWidth: '100%'}}>
+                                <div className="card-body">
+                                    <h5 className="card-title">{rev.user.name}</h5>
+                                    <small className="mb-2 d-block">{rev.updated_at}</small>
+                                    <p className="card-text">{rev.body}</p>
+                                        <a className="float-right">report</a>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
+                
             </div>
         </>
     )

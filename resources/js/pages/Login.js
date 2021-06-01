@@ -1,8 +1,8 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom'
+import React,{ useContext } from 'react'
 
 const Login = () => {
     let history = useHistory()
+    
     return (
         <div className="container-fluid tinggi-100">
             <div className="h-100 d-flex justify-content-center align-items-center flex-column">

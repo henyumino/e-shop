@@ -4,6 +4,7 @@ import Register from './Register'
 import Dashboard from './Dashboard'
 import Product from './Product'
 import Checkout from './Checkout'
+import Profile from './Profile'
 
-export { Home, Login, Register, Dashboard, Product, Checkout }
+export { Home, Login, Register, Dashboard, Product, Checkout, Profile }
 
