@@ -28,8 +28,9 @@ class ItemController extends Controller
         else{
             // buat uniq name untuk image$random_num = Str::random(10);
             $random_num = Str::random(10);
-            $request->image->storeAs('public/item_image', time().'_'.$random_num.'.jpg');
-            $image = time().'_'.$random_num.'.jpg';
+            $time = time();
+            $request->image->storeAs('public/item_image', $time.'_'.$random_num.'.jpg');
+            $image = $time.'_'.$random_num.'.jpg';
 
             $slug = Str::slug($request->name, '-');
         
@@ -86,8 +87,9 @@ class ItemController extends Controller
         else{
             $item = Item::find($id);
             $random_num = Str::random(10);
-            $request->image->storeAs('public/item_image', time().'_'.$random_num.'.jpg');
-            $image = time().'_'.$random_num.'.jpg';
+            $time = time();
+            $request->image->storeAs('public/item_image', $time.'_'.$random_num.'.jpg');
+            $image = $time.'_'.$random_num.'.jpg';
             $slug = Str::slug($request->name, $separator);
             if($request->image){
 
