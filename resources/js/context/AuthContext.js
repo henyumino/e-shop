@@ -45,6 +45,7 @@ const AuthProvider = (props) => {
         axios.get(`${link}/sanctum/csrf-cookie`).then(res => {
             axios.post(`${link}/api/register`, crd).then(res => {
                 if(res.data.success){
+
                     localStorage.setItem('loggedIn', 'true')
                     localStorage.setItem('token', res.data.token)
                     
