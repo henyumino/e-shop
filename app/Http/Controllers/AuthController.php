@@ -49,8 +49,8 @@ class AuthController extends Controller
     {
 
         $rules = [
-            'name' => 'required',
-            'email' => 'required',
+            'name' => 'required|unique:users',
+            'email' => 'required|unique:users',
             'password' => 'required|confirmed',
         ];
         
@@ -67,7 +67,17 @@ class AuthController extends Controller
             'role' => 0,
         ]);
 
-        return response('success', 201);
+        $user = User::where('email', $request->email)->first();
+        $token = $user->createToken('ApiToken')->plainTextToken;
+
+        $response = [
+            'success'   => true,
+            'user'      => $user,
+            'token'     => $token
+        ];
+
+
+        return response($response, 201);
         
     }
 
