@@ -24,6 +24,7 @@ const ProtectedRoute = (props) => {
     )
 }
 
+
 const MainApp = () => {
     return (
         <AuthProvider>
@@ -43,7 +44,7 @@ const MainApp = () => {
 
                             <Route path="/product/:slug" component={Product} exact />
 
-                            <Route path="/checkout" component={Checkout} exact />
+                            <ProtectedRoute path="/checkout" component={Checkout} exact />
                                 
                             <Route component={NotFound} exact />
                         

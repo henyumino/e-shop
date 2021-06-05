@@ -68,10 +68,6 @@ const Checkout = () => {
                     <FontAwesomeIcon icon={faAmazonPay} size="2x" className="icon-checkout" />
                 </div>
                 <div className="form-shipping">
-                    <h6 className="text-center mb-3">Contact Information</h6>
-                    <div className="form-group">
-                        <input type="text" className="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter email" />
-                    </div>
                     <h6 className="text-center mb-3">Address Information</h6>
                     <div className="form-group">
                         <input type="text" className="form-control" name="name" placeholder="name" />

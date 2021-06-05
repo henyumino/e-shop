@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext, useState, useEffect, useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -6,6 +6,7 @@ import { faUser, faShoppingCart, faArrowLeft } from '@fortawesome/free-solid-svg
 import { ProductCartItem,Login,Register } from '../components'
 import { CartContext } from '../context/CartContext'
 import { AuthContext } from '../context/AuthContext'
+import $ from 'jquery'
 
 const Navbar = () => {
     let history = useHistory()
@@ -61,7 +62,23 @@ const Navbar = () => {
         )
     }
 
+
+    
+    const checkToken = () => {
+
+        const [token] = localStorage.getItem("token") || ""
+
+        if(token){
+            history.push('/checkout')
+        }
+        else{
+            $('#alertModal').modal('show')
+        }
+       
+    }
+
     const CartItem = () => {
+        
         return (
             <>
                 <div className="cart-item-list d-flex flex-column pr-2">
@@ -90,7 +107,7 @@ const Navbar = () => {
                         <span>Rp.{total}</span>
                     </div>
                     <div className="d-flex justify-content-center flex-column align-items-center">
-                        <button className="btn btn-warning mt-3 w-100" onClick={() => history.push('/checkout') }>Checkout</button>
+                        <button className="btn btn-warning mt-3 w-100" onClick={checkToken}>Checkout</button>
                         <a className="mt-1" onClick={() => setShowCart(false)}>Continue Shopping</a>
                     </div>
                 </div>
@@ -118,6 +135,24 @@ const Navbar = () => {
 
     return (
         <>
+            <div className="modal fade" id="alertModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title" id="exampleModalLongTitle">Alert</h5>
+                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        You must login first before procced checkout
+                    </div>
+                    <div className="modal-footer">
+                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
             {/* cart */}
             <div className={`cart-wrapper ${ showCart ? 'show' : 'hide' }`} onClick={() => setShowCart(false)}>
                 <div className="cart-item-wrapper" onClick={(e) => e.stopPropagation()}>
