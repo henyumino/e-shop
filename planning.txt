@@ -10,5 +10,10 @@
 -checkout logic
 klik checkout -> continue shipping -> form alamat -> ok -> tunggu balasan dari admin 
 
+-confirmation page untuk admin
+
 -ganti kolom review_id menjadi post_id pada table review
--pada saat submit item , form input tidak clear tolong difix
+
+
+-add transaction table
+    id, user_id, item(json), total_price
