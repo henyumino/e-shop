@@ -172,7 +172,7 @@ const Dashboard = () => {
                 <div className="sidebar">
                     <div className="sidebar-nav-item" onClick={() => setSection({...initialSection, home: 'show'})}>Home</div>
                     <div className="sidebar-nav-item" onClick={() => setSection({...initialSection, product: 'show'})}>Product</div>
-                    <div className="sidebar-nav-item" onClick={() => setSection({...initialSection, asd: 'show'})}>Asd</div>
+                    <div className="sidebar-nav-item" onClick={() => setSection({...initialSection, transaction: 'show'})}>Transaction</div>
                 </div>
                 <div className="main-section">
                     <div className={'child-section '+section.home}>
@@ -296,7 +296,7 @@ const Dashboard = () => {
                             </table>
                         </div>
                     </div>
-                    <div className={'child-section '+section.asd}>asd</div>
+                    <div className={'child-section '+section.transaction}>asd // transaction confirmation here</div>
                 </div>
             </div>
         </div>

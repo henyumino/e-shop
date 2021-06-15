@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TransactionController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -18,7 +19,7 @@ Route::get('/item', [ItemController::class, 'show']);
 Route::get('/item/{slug}', [ItemController::class, 'showSingle']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    Route::get('/user', function (Request $request) {
         return $request->user();
     });
     Route::post('/item', [ItemController::class, 'store']);
@@ -27,6 +28,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/item/{id}', [ItemController::class, 'update']);
     // coba hilangkan middleware didalam route group
     Route::post('/review',[ReviewController::class, 'store']);
+    Route::post('/checkout',[TransactionController::class, 'store']);
+    
 });
 
 

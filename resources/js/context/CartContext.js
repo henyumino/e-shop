@@ -71,6 +71,11 @@ const CartProvider = (props) => {
         window.localStorage.setItem('cartData', JSON.stringify(cartData));
     }
 
+    const resetCart = () => {
+        setCart([])
+        localStorage.removeItem("cartData")
+    }
+
     useEffect(() => {
        subTotal()
        setLocalStorage()
@@ -78,7 +83,7 @@ const CartProvider = (props) => {
     
 
     return (
-        <CartContext.Provider value={{addToCart,cart,incAmount,decAmount,deleteItem,total}}>
+        <CartContext.Provider value={{addToCart,cart,incAmount,decAmount,deleteItem,total,resetCart}}>
             {props.children}
         </CartContext.Provider>
     )

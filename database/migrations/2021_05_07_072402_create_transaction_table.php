@@ -17,6 +17,13 @@ class CreateTransactionTable extends Migration
             $table->id();
             $table->integer('user_id')->unsigned();
             $table->text('item');
+            $table->double('total', 8, 2);
+            $table->string('name');
+            $table->string('address');
+            $table->string('country');
+            $table->string('province');
+            $table->string('city');
+            $table->string('phone_number');
             $table->timestamps();
         });
     }
