@@ -26,6 +26,7 @@ const Product = () => {
     // const {showSingle,itemSingle} = useContext(ItemContext)
     const [item, setItem] = useState([])
     const [cart, setCart] = useState([{
+        item_id : '',
         name : '',
         desc : '',
         price : '',
@@ -44,7 +45,7 @@ const Product = () => {
     }, [])
 
     useEffect(() => {
-        setCart([{...cart, name: item.name, desc: item.description , price: item.price, img: item.item_image}])
+        setCart([{...cart,item_id: item.id, name: item.name, desc: item.description , price: item.price, img: item.item_image}])
     }, [item])
 
     useEffect(() => {

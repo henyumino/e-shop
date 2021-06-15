@@ -16264,12 +16264,38 @@ var CartProvider = function CartProvider(props) {
       setTotal = _useState4[1];
 
   var addToCart = function addToCart(product) {
-    Object.assign.apply(Object, _toConsumableArray(product).concat([{
-      amount: 1
-    }, {
-      d_price: product[0].price
-    }]));
-    setCart([].concat(_toConsumableArray(cart), _toConsumableArray(product)));
+    var p_id = product[0].item_id;
+
+    if (cart.length <= 0) {
+      Object.assign.apply(Object, _toConsumableArray(product).concat([{
+        amount: 1
+      }, {
+        d_price: product[0].price
+      }]));
+      setCart([].concat(_toConsumableArray(cart), _toConsumableArray(product)));
+    } else {
+      cart.forEach(function (el) {
+        if (p_id == el.item_id) {
+          var index = cart.findIndex(function (x) {
+            return x.item_id == p_id;
+          });
+          incAmount(index);
+        }
+      });
+    }
+
+    var cl = cart.findIndex(function (e) {
+      return e.item_id === p_id;
+    });
+
+    if (cl == -1) {
+      Object.assign.apply(Object, _toConsumableArray(product).concat([{
+        amount: 1
+      }, {
+        d_price: product[0].price
+      }]));
+      setCart([].concat(_toConsumableArray(cart), _toConsumableArray(product)));
+    }
   };
 
   var incAmount = function incAmount(i) {
@@ -17684,6 +17710,7 @@ var Product = function Product() {
       setItem = _useState2[1];
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([{
+    item_id: '',
     name: '',
     desc: '',
     price: '',
@@ -17707,6 +17734,7 @@ var Product = function Product() {
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     setCart([_objectSpread(_objectSpread({}, cart), {}, {
+      item_id: item.id,
       name: item.name,
       desc: item.description,
       price: item.price,

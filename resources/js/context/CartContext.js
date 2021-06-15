@@ -8,11 +8,28 @@ const CartProvider = (props) => {
     const [total, setTotal] = useState(0)
 
     const addToCart = (product) => {
-        Object.assign(...product, {amount:1},{d_price: product[0].price})
-        setCart([...cart,...product])
+        let p_id = product[0].item_id
+        if(cart.length <= 0){
+            Object.assign(...product, {amount:1},{d_price: product[0].price})
+            setCart([...cart,...product])
+        }else{
+            cart.forEach(el => {
+                if(p_id == el.item_id){
+                    let index = cart.findIndex(x => x.item_id == p_id)
+                    incAmount(index) 
+                }
+            });
+        }
+
+        let cl = cart.findIndex(e => e.item_id === p_id)
+        if(cl == -1){
+            Object.assign(...product, {amount:1},{d_price: product[0].price})
+            setCart([...cart,...product])
+        }
+        
     }
 
-     const incAmount = (i) => {
+    const incAmount = (i) => {
         const oldCart = [...cart];
         let newCart = { ...oldCart[i] };
         newCart.amount++;
