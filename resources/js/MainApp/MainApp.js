@@ -6,10 +6,11 @@ import {
     Route,
     Redirect,
 } from 'react-router-dom'
-import { Home, Register, Login, Dashboard, Product, Checkout, Profile } from '../pages'
+import { Home, Dashboard, Product, Checkout, Transaction, Detail } from '../pages'
 import CartProvider from '../context/CartContext'
 import AuthProvider from '../context/AuthContext'
 import ItemProvider from '../context/ItemContext'
+import TransProvider from '../context/TransactionContext'
 
 
 const NotFound = () => {
@@ -29,28 +30,32 @@ const MainApp = () => {
     return (
         <AuthProvider>
             <CartProvider>
-                <ItemProvider>
-                    <Router>
-                        <Switch>
-                            <Route path="/" component={Home} exact />
+                <TransProvider>
+                    <ItemProvider>
+                        <Router>
+                            <Switch>
+                                <Route path="/" component={Home} exact />
 
-                            {/* protected route admin */}
-                            
-                            <Route path="/admin/dashboard" component={Dashboard}  exact />
-                        
-                            {/* end admin route */}
-                            
-                            <ProtectedRoute path='/profile' component={Profile} exact />
-
-                            <Route path="/product/:slug" component={Product} exact />
-
-                            <ProtectedRoute path="/checkout" component={Checkout} exact />
+                                {/* protected route admin */}
                                 
-                            <Route component={NotFound} exact />
-                        
-                        </Switch>
-                    </Router>
-                </ItemProvider>
+                                <Route path="/admin/dashboard" component={Dashboard}  exact />
+                            
+                                {/* end admin route */}
+                                
+                                <ProtectedRoute path='/transaction' component={Transaction} exact />
+                                
+                                <ProtectedRoute path='/transaction/:id' component={Detail} exact />
+
+                                <Route path="/product/:slug" component={Product} exact />
+
+                                <ProtectedRoute path="/checkout" component={Checkout} exact />
+                                    
+                                <Route component={NotFound} exact />
+                            
+                            </Switch>
+                        </Router>
+                    </ItemProvider>
+                </TransProvider>
             </CartProvider>
         </AuthProvider>
     )
