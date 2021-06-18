@@ -126,7 +126,7 @@ const Navbar = () => {
                         :
                         ''
                     }
-                    <a className="dropdown-item" onClick={() => history.push('/profile')}>Profile</a>
+                    <a className="dropdown-item" onClick={() => history.push('/transaction')}>Transaction</a>
                     <a className="dropdown-item" onClick={() => logout()}>Log Out</a>
                 </div>
             </li>
@@ -178,7 +178,7 @@ const Navbar = () => {
             }
             
             <nav className="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-                <a className="navbar-brand" onClick={() => history.push('/')}>Navbar</a>
+                <a className="navbar-brand" onClick={() => history.push('/')}>EShop</a>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
