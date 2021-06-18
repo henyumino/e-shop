@@ -24,6 +24,8 @@ class CreateTransactionTable extends Migration
             $table->string('province');
             $table->string('city');
             $table->string('phone_number');
+            $table->string('resi');
+            $table->integer('status')->unsigned();
             $table->timestamps();
         });
     }
