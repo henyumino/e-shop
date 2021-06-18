@@ -28,7 +28,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/item/{id}', [ItemController::class, 'update']);
     // coba hilangkan middleware didalam route group
     Route::post('/review',[ReviewController::class, 'store']);
+    //transaction
     Route::post('/checkout',[TransactionController::class, 'store']);
+    Route::get('/transaction',[TransactionController::class, 'show']);
+    Route::get('/detail/{id}',[TransactionController::class, 'detail']); 
+    Route::get('/transaction/all',[TransactionController::class, 'allTrans']); 
+    Route::post('/resi/{id}',[TransactionController::class, 'inputResi']); 
     
 });
 
