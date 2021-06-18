@@ -4,19 +4,21 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { AuthContext } from '../context/AuthContext'
 import { ItemContext } from '../context/ItemContext'
+import { TransContext } from '../context/TransactionContext'
 
 const Dashboard = () => {
     let history = useHistory()
     const initialSection = {
         home: 'hide',
         product: 'hide',
-        asd : 'hide'
+        transaction : 'hide'
     }
+    const [section, setSection] = useState(initialSection)
     const token = localStorage.getItem('token')
     const {logout,user} = useContext(AuthContext)
+    const {alltrans, inputResi} = useContext(TransContext)
     const {submitItem,errorItem,itemDash,deleteItem, editItem, editData, updateItem, resetError, resForm} = useContext(ItemContext)
     // submit state
-    const [section, setSection] = useState(initialSection)
     const [itemData, setItemData] = useState({
         name : '',
         price : '',
@@ -90,6 +92,7 @@ const Dashboard = () => {
             desc : '',
         })
         setImage()
+        setResi('')
     }
 
     useEffect(() => {
@@ -102,6 +105,61 @@ const Dashboard = () => {
         //component did update
         setEditForm({...editForm, id_item : editData.id , name : editData.name, price : editData.price, desc: editData.description})
     }, [editData])
+
+    const [resi, setResi] = useState([])
+    const [resiId, setResiId] = useState([])
+
+    const handleResi = ({target}) => {
+        setResi(target.value)
+    }
+
+    const submitResi = () => {
+        inputResi(resiId ,resi);
+    }
+
+    const TransTab = () => {
+        return (
+            <table className="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">No</th>
+                        <th scope="col">ID Transaksi</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Resi</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                {
+                    alltrans.map((item, i) => {
+                        return (
+                            <tbody key={i}>
+                                <tr >
+                                    <th scope="col">{i+1}</th>
+                                    <td>{item.id}</td>
+                                    <td>
+                                    {
+                                        item.status == 0 ? <small className="text-warning">Pending</small> : ''
+                                    }
+                                    {
+                                        item.status == 1 ? <small className="text-success">Success</small> : ''
+                                    }
+                                    {
+                                        item.status == 2 ? <small className="text-danger">Rejected</small> : ''
+                                    }
+                                    </td>
+                                    <td>{item.resi}</td>
+                                    <td>
+                                        <button className="btn btn-primary mr-2" data-toggle="modal" data-target="#inputResi" onClick={() => setResiId(item.id)}>Input Resi</button>
+                                        <button className="btn btn-secondary" data-toggle="modal" data-target="#inputStatus">Change Status</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        )
+                    })
+                }
+            </table>
+        )
+    }
 
     if(token == null){
         if(user.role == 0){
@@ -296,7 +354,70 @@ const Dashboard = () => {
                             </table>
                         </div>
                     </div>
-                    <div className={'child-section '+section.transaction}>asd // transaction confirmation here</div>
+                    <div className={'child-section '+section.transaction}>
+                        {/* modal resi */}
+                        <div className="modal fade" id="inputResi" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div className="modal-dialog modal-dialog-centered" role="document">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="exampleModalLongTitle">Input Resi</h5>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={resetForm}>
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <form>
+                                            <div className="form-group">
+                                                <label htmlFor="formGroupExampleInput">No Resi</label>
+                                                <input type="text" className="form-control" placeholder="No Resi" name="resi" value={resi} onChange={handleResi} />
+                                            </div>
+                                            <small className="form-text text-danger mb-2"></small>
+                                        </form>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={resetForm}>Close</button>
+                                        <button type="button" className="btn btn-primary" onClick={submitResi}>Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* end modal resi */}
+                        
+                        {/* status modal */}
+                        <div className="modal fade" id="inputStatus" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div className="modal-dialog modal-dialog-centered" role="document">
+                                <div className="modal-content">
+                                    <div className="modal-header">
+                                        <h5 className="modal-title" id="exampleModalLongTitle">Input Status</h5>
+                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={resetForm}>
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div className="modal-body">
+                                        <form>
+                                            <select className="custom-select">
+                                                <option defaultValue value="">Status</option>
+                                                <option value="0">Pending</option>
+                                                <option value="1">Accepted</option>
+                                                <option value="2">Rejected</option>
+                                            </select>
+                                            <small className="form-text text-danger mb-2"></small>
+                                        </form>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={resetForm}>Close</button>
+                                        <button type="button" className="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* end status modal */}
+                       
+                        <h1 className="mb-2">Transaction</h1>
+                        {
+                            alltrans.length <= 0 ? <div>loading ...</div> : <TransTab />
+                        }
+                    </div>
                 </div>
             </div>
         </div>
