@@ -11,3 +11,6 @@ Route::get('/admin/{path?}',function(){
 Route::get('/product/{path?}',function(){
     return view('home');
 });
+Route::get('/transaction/{path?}',function(){
+    return view('home');
+});
