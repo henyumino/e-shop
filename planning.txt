@@ -17,3 +17,5 @@ klik checkout -> continue shipping -> form alamat -> ok -> tunggu balasan dari a
 
 -add transaction table
     id, user_id, item(json), total_price
+
+-tidak ada middleware admin jadi user bisa membypass method method yang ada jika mengetahui param dari method
