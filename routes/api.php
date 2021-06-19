@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/detail/{id}',[TransactionController::class, 'detail']); 
     Route::get('/transaction/all',[TransactionController::class, 'allTrans']); 
     Route::post('/resi/{id}',[TransactionController::class, 'inputResi']); 
+    Route::post('/status/{id}',[TransactionController::class, 'inputStatus']); 
     
 });
 

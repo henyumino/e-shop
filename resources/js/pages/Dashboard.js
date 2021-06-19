@@ -16,7 +16,7 @@ const Dashboard = () => {
     const [section, setSection] = useState(initialSection)
     const token = localStorage.getItem('token')
     const {logout,user} = useContext(AuthContext)
-    const {alltrans, inputResi} = useContext(TransContext)
+    
     const {submitItem,errorItem,itemDash,deleteItem, editItem, editData, updateItem, resetError, resForm} = useContext(ItemContext)
     // submit state
     const [itemData, setItemData] = useState({
@@ -106,15 +106,29 @@ const Dashboard = () => {
         setEditForm({...editForm, id_item : editData.id , name : editData.name, price : editData.price, desc: editData.description})
     }, [editData])
 
+    const {alltrans, inputResi, resiErr, inputStatus, stsErr} = useContext(TransContext)
     const [resi, setResi] = useState([])
     const [resiId, setResiId] = useState([])
+    const [status, setStatus] = useState([])
+    
 
     const handleResi = ({target}) => {
         setResi(target.value)
     }
 
-    const submitResi = () => {
-        inputResi(resiId ,resi);
+    const submitResi = (e) => {
+        e.preventDefault()
+        inputResi(resiId ,resi)
+        setResi('')
+    }
+
+    const handleStatus = ({target}) => {
+        setStatus(target.value)
+    }
+
+    const submitStatus = (e) => {
+        e.preventDefault()
+        inputStatus(resiId, status)
     }
 
     const TransTab = () => {
@@ -150,7 +164,7 @@ const Dashboard = () => {
                                     <td>{item.resi}</td>
                                     <td>
                                         <button className="btn btn-primary mr-2" data-toggle="modal" data-target="#inputResi" onClick={() => setResiId(item.id)}>Input Resi</button>
-                                        <button className="btn btn-secondary" data-toggle="modal" data-target="#inputStatus">Change Status</button>
+                                        <button className="btn btn-secondary" data-toggle="modal" data-target="#inputStatus" onClick={() => setResiId(item.id)}>Change Status</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -371,7 +385,7 @@ const Dashboard = () => {
                                                 <label htmlFor="formGroupExampleInput">No Resi</label>
                                                 <input type="text" className="form-control" placeholder="No Resi" name="resi" value={resi} onChange={handleResi} />
                                             </div>
-                                            <small className="form-text text-danger mb-2"></small>
+                                            <small className="form-text text-danger mb-2">{resiErr ? resiErr.resi : ''}</small>
                                         </form>
                                     </div>
                                     <div className="modal-footer">
@@ -395,18 +409,18 @@ const Dashboard = () => {
                                     </div>
                                     <div className="modal-body">
                                         <form>
-                                            <select className="custom-select">
+                                            <select className="custom-select" name="status" onChange={handleStatus}>
                                                 <option defaultValue value="">Status</option>
                                                 <option value="0">Pending</option>
                                                 <option value="1">Accepted</option>
                                                 <option value="2">Rejected</option>
                                             </select>
-                                            <small className="form-text text-danger mb-2"></small>
+                                            <small className="form-text text-danger mb-2">{stsErr ? stsErr.status : ''}</small>
                                         </form>
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={resetForm}>Close</button>
-                                        <button type="button" className="btn btn-primary">Submit</button>
+                                        <button type="button" className="btn btn-primary" onClick={submitStatus}>Submit</button>
                                     </div>
                                 </div>
                             </div>

@@ -91,7 +91,51 @@ class TransactionController extends Controller
 
     public function inputResi(Request $request, $id)
     {
-        //tinggal tambahkan validasi
-        return response($request->resi,200);
+        $rules = [
+            'resi' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails()){
+            $response = [
+                'success' => false,
+                'errors' => $validator->errors()
+            ];
+            return response($response, 200);
+        }else{
+
+            $ts = Transaction::find($id);
+            $ts->resi = $request->resi;
+            $ts->save();
+
+            $response = [
+                'success' => true,
+            ];
+            return response($response, 200);
+        }
+    }
+
+    public function inputStatus(Request $request, $id)
+    {
+        $rules = [
+            'status' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if($validator->fails()){
+            $response = [
+                'success' => false,
+                'errors' => $validator->errors()
+            ];
+            return response($response, 200);
+        }else{
+
+            $ts = Transaction::find($id);
+            $ts->status = $request->status;
+            $ts->save();
+
+            $response = [
+                'success' => true,
+            ];
+            return response($response, 200);
+        }
     }
 }

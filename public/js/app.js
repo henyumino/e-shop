@@ -16604,25 +16604,66 @@ var TransactionProvider = function TransactionProvider(props) {
       alltrans = _useState2[0],
       setalltrans = _useState2[1];
 
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      resiErr = _useState4[0],
+      setresiErr = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      resT = _useState6[0],
+      setresT = _useState6[1];
+
+  var _useState7 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState8 = _slicedToArray(_useState7, 2),
+      stsErr = _useState8[0],
+      setstsErr = _useState8[1];
+
   var inputResi = function inputResi(id, resi) {
     axios__WEBPACK_IMPORTED_MODULE_1___default().post("".concat(link, "/api/resi/").concat(id), {
       resi: resi
     }).then(function (res) {
-      return console.log(res);
+      if (res.data.success) {
+        setresiErr('');
+        jquery__WEBPACK_IMPORTED_MODULE_2___default()('#inputResi').modal('hide'); // resT untuk merefresh trans tab
+
+        setresT(0);
+      } else {
+        setresiErr(res.data.errors);
+      }
+    });
+  };
+
+  var inputStatus = function inputStatus(id, status) {
+    axios__WEBPACK_IMPORTED_MODULE_1___default().post("".concat(link, "/api/status/").concat(id), {
+      status: status
+    }).then(function (res) {
+      if (res.data.success) {
+        setstsErr('');
+        jquery__WEBPACK_IMPORTED_MODULE_2___default()('#inputStatus').modal('hide'); // resT untuk merefresh trans tab
+
+        setresT(0);
+      } else {
+        setstsErr(res.data.errors);
+      }
     });
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     axios__WEBPACK_IMPORTED_MODULE_1___default().get("".concat(link, "/api/transaction/all")).then(function (res) {
       setalltrans(res.data);
+      setresT(1);
     })["catch"](function (err) {
       return console.log(err);
     });
-  }, [link]);
+  }, [link, resT]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(TransContext.Provider, {
     value: {
       alltrans: alltrans,
-      inputResi: inputResi
+      inputResi: inputResi,
+      resiErr: resiErr,
+      inputStatus: inputStatus,
+      stsErr: stsErr
     },
     children: props.children
   });
@@ -17080,20 +17121,16 @@ var Dashboard = function Dashboard() {
       logout = _useContext.logout,
       user = _useContext.user;
 
-  var _useContext2 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_TransactionContext__WEBPACK_IMPORTED_MODULE_4__.TransContext),
-      alltrans = _useContext2.alltrans,
-      inputResi = _useContext2.inputResi;
-
-  var _useContext3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_ItemContext__WEBPACK_IMPORTED_MODULE_3__.ItemContext),
-      submitItem = _useContext3.submitItem,
-      errorItem = _useContext3.errorItem,
-      itemDash = _useContext3.itemDash,
-      deleteItem = _useContext3.deleteItem,
-      editItem = _useContext3.editItem,
-      editData = _useContext3.editData,
-      updateItem = _useContext3.updateItem,
-      resetError = _useContext3.resetError,
-      resForm = _useContext3.resForm; // submit state
+  var _useContext2 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_ItemContext__WEBPACK_IMPORTED_MODULE_3__.ItemContext),
+      submitItem = _useContext2.submitItem,
+      errorItem = _useContext2.errorItem,
+      itemDash = _useContext2.itemDash,
+      deleteItem = _useContext2.deleteItem,
+      editItem = _useContext2.editItem,
+      editData = _useContext2.editData,
+      updateItem = _useContext2.updateItem,
+      resetError = _useContext2.resetError,
+      resForm = _useContext2.resForm; // submit state
 
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({
@@ -17203,6 +17240,13 @@ var Dashboard = function Dashboard() {
     }));
   }, [editData]);
 
+  var _useContext3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useContext)(_context_TransactionContext__WEBPACK_IMPORTED_MODULE_4__.TransContext),
+      alltrans = _useContext3.alltrans,
+      inputResi = _useContext3.inputResi,
+      resiErr = _useContext3.resiErr,
+      inputStatus = _useContext3.inputStatus,
+      stsErr = _useContext3.stsErr;
+
   var _useState13 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState14 = _slicedToArray(_useState13, 2),
       resi = _useState14[0],
@@ -17213,13 +17257,30 @@ var Dashboard = function Dashboard() {
       resiId = _useState16[0],
       setResiId = _useState16[1];
 
+  var _useState17 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState18 = _slicedToArray(_useState17, 2),
+      status = _useState18[0],
+      setStatus = _useState18[1];
+
   var handleResi = function handleResi(_ref3) {
     var target = _ref3.target;
     setResi(target.value);
   };
 
-  var submitResi = function submitResi() {
+  var submitResi = function submitResi(e) {
+    e.preventDefault();
     inputResi(resiId, resi);
+    setResi('');
+  };
+
+  var handleStatus = function handleStatus(_ref4) {
+    var target = _ref4.target;
+    setStatus(target.value);
+  };
+
+  var submitStatus = function submitStatus(e) {
+    e.preventDefault();
+    inputStatus(resiId, status);
   };
 
   var TransTab = function TransTab() {
@@ -17278,6 +17339,9 @@ var Dashboard = function Dashboard() {
                 className: "btn btn-secondary",
                 "data-toggle": "modal",
                 "data-target": "#inputStatus",
+                onClick: function onClick() {
+                  return setResiId(item.id);
+                },
                 children: "Change Status"
               })]
             })]
@@ -17801,7 +17865,8 @@ var Dashboard = function Dashboard() {
                           onChange: handleResi
                         })]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("small", {
-                        className: "form-text text-danger mb-2"
+                        className: "form-text text-danger mb-2",
+                        children: resiErr ? resiErr.resi : ''
                       })]
                     })
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -17855,6 +17920,8 @@ var Dashboard = function Dashboard() {
                     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("form", {
                       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("select", {
                         className: "custom-select",
+                        name: "status",
+                        onChange: handleStatus,
                         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("option", {
                           defaultValue: true,
                           value: "",
@@ -17870,7 +17937,8 @@ var Dashboard = function Dashboard() {
                           children: "Rejected"
                         })]
                       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("small", {
-                        className: "form-text text-danger mb-2"
+                        className: "form-text text-danger mb-2",
+                        children: stsErr ? stsErr.status : ''
                       })]
                     })
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -17884,6 +17952,7 @@ var Dashboard = function Dashboard() {
                     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("button", {
                       type: "button",
                       className: "btn btn-primary",
+                      onClick: submitStatus,
                       children: "Submit"
                     })]
                   })]
@@ -17982,7 +18051,6 @@ var Detail = function Detail() {
   }, [id]);
 
   var DetailData = function DetailData() {
-    console.log(loadData);
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
         className: "w-100",
@@ -18017,22 +18085,20 @@ var Detail = function Detail() {
               })]
             })
           }), loadItem.map(function (item, i) {
-            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tbody", {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
-                    scope: "row",
-                    children: i + 1
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                    children: item.name
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                    children: item.amount
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
-                    children: item.price
-                  })]
-                }, i)
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("tbody", {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("tr", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("th", {
+                  scope: "row",
+                  children: i + 1
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: item.name
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: item.amount
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("td", {
+                  children: item.price
+                })]
               })
-            });
+            }, i);
           })]
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {

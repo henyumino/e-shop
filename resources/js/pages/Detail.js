@@ -28,7 +28,6 @@ const Detail = () => {
     }, [id])
 
     const DetailData = () => {
-        console.log(loadData)
         return(
             <>
                 <div className="w-100">Status : 
@@ -52,16 +51,14 @@ const Detail = () => {
                         {
                         loadItem.map((item, i) => {
                             return(
-                                <>
-                                    <tbody>
-                                        <tr key={i}>
+                                    <tbody key={i}>
+                                        <tr>
                                             <th scope="row">{i+1}</th>
                                             <td>{item.name}</td>
                                             <td>{item.amount}</td>
                                             <td>{item.price}</td>
                                         </tr>
                                     </tbody>
-                                </>
                             )
                         })
                         }
